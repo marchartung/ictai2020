@@ -1,0 +1,127 @@
+SOLVERNAME,STD
+BENCHNAME,/nfs/scratch/bzchartu/unsat_2018_solved/e_rphp065_04.cnf
+running lrb Bench '/nfs/scratch/bzchartu/unsat_2018_solved/e_rphp065_04.cnf' on cumu02-14
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/sources/simp/glucose_release -det=lrb /nfs/scratch/bzchartu/unsat_2018_solved/e_rphp065_04.cnf -cpu-lim=10000 -drup-file=/local_ssd/proof.drat"
+	User time (seconds): 388.32
+	System time (seconds): 0.46
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:28.76
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 105796
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 144815
+	Voluntary context switches: 40
+	Involuntary context switches: 205
+	Swaps: 0
+	File system inputs: 456
+	File system outputs: 1395488
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+SOLVE_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:28.76
+c This is MapleLCMDistChronoBT.
+c WARNING: for repeatability, setting FPU to use double precision
+c Analyzer is deactivated by mode: 1 and dyn: 1
+c ============================[ Problem Statistics ]=============================
+c |                                                                             |
+c |  Number of variables:          7073                                         |
+c |  Number of clauses:           13512                                         |
+c |  Parse time:                   0.01 s                                       |
+c |  Eliminated clauses:           0.15 Mb                                      |
+c Reduced to 451 vars, 6890 cls (grow=0)
+c No iterative elimination performed. (vars=451, c/v ratio=15.3)
+c |  Simplification time:          0.03 s                                       |
+c |                                                                             |
+c running deterministic with LRB
+c ============================[ Search Statistics ]==============================
+c | Conflicts |          ORIGINAL         |          LEARNT          | Progress |
+c |           |    Vars  Clauses Literals |    Limit  Clauses Lit/Cl |          |
+c ===============================================================================
+c ===============================================================================
+c restarts              : 11108
+c conflicts             : 6794116        (17496 /sec)
+c decisions             : 77516909       (0.00 % random) (199621 /sec)
+c propagations          : 290726432      (748677 /sec)
+c conflict literals     : 178637360      (24.55 % deleted)
+c backtracks            : 6754805        (NCB 99% , CB 1%)
+c Memory used           : 116.00 MB
+c CPU time              : 388.32 s
+
+s UNSATISFIABLE
+DRAT_SIZE: 697736	/local_ssd/proof.drat
+s UNSATISFIABLE
+/local_ssd/proof.drat
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/drat-trim/drat-trim /nfs/scratch/bzchartu/unsat_2018_solved/e_rphp065_04.cnf /local_ssd/proof.drat -L /local_ssd/proof.lrat -t 200000"
+	User time (seconds): 1464.00
+	System time (seconds): 3.40
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 24:27.33
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2248156
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 3284145
+	Voluntary context switches: 24
+	Involuntary context switches: 1731
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 2653184
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+DRAT_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 24:27.33
+c turning on binary mode checking
+c parsing input formula with 7073 variables and 13512 clauses
+c finished parsing, read 714477048 bytes from proof file
+c detected empty clause; start verification via backward checking
+c 13512 of 13512 clauses in core                            
+c 6070581 of 8033104 lemmas in core using 134989134 resolution steps
+c 0 RAT lemmas in core; 0 redundant literals in core lemmas
+s VERIFIED
+c verification time: 1467.267 seconds
+LRAT_SIZE: 1326588	/local_ssd/proof.lrat
+s VERIFIED
+/local_ssd/proof.lrat
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/drat-trim/lrat-check /nfs/scratch/bzchartu/unsat_2018_solved/e_rphp065_04.cnf /local_ssd/proof.lrat"
+	User time (seconds): 30.13
+	System time (seconds): 0.56
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:30.84
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 554700
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 174736
+	Voluntary context switches: 29
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+LRAT_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:30.84
+c parsed a formula with 7073 variables and 13512 clauses
+c VERIFIED
+c Added clauses = 6084093.  Deleted clauses = 6084038.  Max live clauses = 72156
+c verification time = 30.69 secs
+c VERIFIED
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/e_rphp065_04.cnf,	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:28.76,	Maximum resident set size (kbytes): 105796,697736	/local_ssd/proof.drat,	Elapsed (wall clock) time (h:mm:ss or m:ss): 24:27.33,1326588	/local_ssd/proof.lrat,	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:30.84,c restarts              : 11108,c decisions             : 77516909       (0.00 % random) (199621 /sec),c conflicts             : 6794116        (17496 /sec),c propagations          : 290726432      (748677 /sec)

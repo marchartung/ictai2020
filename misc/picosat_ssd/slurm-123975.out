@@ -1,0 +1,53 @@
+running picosat bench '/nfs/scratch/bzchartu/unsat_2018_solved/sdiv17prop.cnf' on cumu01-12
+s UNSATISFIABLE
+/local_ssd/pico.trace
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/picosat-965/picosat -L 50000 -t /local_ssd/pico.trace /nfs/scratch/bzchartu/unsat_2018_solved/sdiv17prop.cnf"
+	User time (seconds): 7689.32
+	System time (seconds): 160.36
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:10:50
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 17639156
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 303480485
+	Voluntary context switches: 1084
+	Involuntary context switches: 2494
+	Swaps: 0
+	File system inputs: 328
+	File system outputs: 83409160
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+resolved 1 root and 1 empty clause
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/booleforce-1.3/tracecheck /local_ssd/pico.trace"
+	User time (seconds): 1999.28
+	System time (seconds): 78.68
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 34:38.06
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 34799840
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 98852491
+	Voluntary context switches: 214
+	Involuntary context switches: 1278
+	Swaps: 0
+	File system inputs: 39700984
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations,mark proof sec,dump lrat sec, ana sec, anamem mb
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/sdiv17prop.cnf,	Maximum resident set size (kbytes): 17639156,	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:10:50,0,0,41704580	/local_ssd/pico.trace,	Elapsed (wall clock) time (h:mm:ss or m:ss): 34:38.06,0,0,0,0,0,0,0,0

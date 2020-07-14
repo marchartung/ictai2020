@@ -1,0 +1,118 @@
+SOLVERNAME,ANA
+ANA_TMP_CONFIG,'/local_ssd/proof.dat'
+BENCHNAME,/nfs/scratch/bzchartu/unsat_2018_solved/T82.2.0.cnf
+running lrb Bench '/nfs/scratch/bzchartu/unsat_2018_solved/T82.2.0.cnf' on cumu02-14
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/sources/simp/glucose_release_ana -det=lrb /nfs/scratch/bzchartu/unsat_2018_solved/T82.2.0.cnf -cpu-lim=10000 -analyzer-tmp-file=/local_ssd/proof.dat -lrat-file=/local_ssd/proof.lrat"
+	User time (seconds): 273.12
+	System time (seconds): 5.70
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:39.76
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4147160
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 10
+	Minor (reclaiming a frame) page faults: 4256351
+	Voluntary context switches: 55
+	Involuntary context switches: 1391
+	Swaps: 0
+	File system inputs: 480096
+	File system outputs: 7747704
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+SOLVE_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:39.76
+c This is MapleLCMDistChronoBT.
+c WARNING: for repeatability, setting FPU to use double precision
+c Sat Analyzer will analyze result
+c Analyzer will dump LRAT to '/local_ssd/proof.lrat'
+c ============================[ Problem Statistics ]=============================
+c |                                                                             |
+reserve 85196788 on /local_ssd/proof.dat
+reserve 138444788 on /local_ssd/proof.dat
+reserve 224972788 on /local_ssd/proof.dat
+reserve 365580788 on /local_ssd/proof.dat
+reserve 594074612 on /local_ssd/proof.dat
+c |  Number of variables:       3166041                                         |
+c |  Number of clauses:        10917087                                         |
+c |  Parse time:                   5.09 s                                       |
+reserve 965372916 on /local_ssd/proof.dat
+reserve 1568732660 on /local_ssd/proof.dat
+c |  Eliminated clauses:         120.92 Mb                                      |
+c Reduced to 591080 vars, 3520055 cls (grow=0)
+reserve 2549194740 on /local_ssd/proof.dat
+c |  Eliminated clauses:         137.68 Mb                                      |
+c Reduced to 385586 vars, 3567278 cls (grow=8)
+c cl_inc_rate=1.013, var_dec_rate=1.533
+c |  Eliminated clauses:         140.92 Mb                                      |
+c Reduced to 354999 vars, 3709990 cls (grow=16)
+c cl_inc_rate=1.040, var_dec_rate=1.086
+c |  Eliminated clauses:         146.47 Mb                                      |
+c Reduced to 315136 vars, 3920257 cls (grow=32)
+c cl_inc_rate=1.057, var_dec_rate=1.126
+c |  Eliminated clauses:         154.89 Mb                                      |
+c Reduced to 265482 vars, 4801235 cls (grow=64)
+c cl_inc_rate=1.225, var_dec_rate=1.187
+c No. effective iterative eliminations: 4
+c |  Simplification time:         84.38 s                                       |
+c |                                                                             |
+c running deterministic with LRB
+c ============================[ Search Statistics ]==============================
+c | Conflicts |          ORIGINAL         |          LEARNT          | Progress |
+c |           |    Vars  Clauses Literals |    Limit  Clauses Lit/Cl |          |
+c ===============================================================================
+reserve 4142441460 on /local_ssd/proof.dat
+c ===============================================================================
+c restarts              : 624
+c conflicts             : 249627         (932 /sec)
+c decisions             : 3653843        (0.00 % random) (13640 /sec)
+c propagations          : 390943897      (1459378 /sec)
+c conflict literals     : 8554200        (29.17 % deleted)
+c backtracks            : 248424         (NCB 97% , CB 3%)
+c Memory used           : 5850.00 MB
+c CPU time              : 267.884 s
+
+s UNSATISFIABLE
+Marking proof: 0.664 seconds
+c Dumping LRAT: 4.36 seconds
+c Analyze time: 	5.024 seconds
+c Analyze used disk storage:	2730.13 MB
+LRAT_SIZE: 227076	/local_ssd/proof.lrat
+s UNSATISFIABLE
+/local_ssd/proof.lrat
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/drat-trim/lrat-check /nfs/scratch/bzchartu/unsat_2018_solved/T82.2.0.cnf /local_ssd/proof.lrat"
+	User time (seconds): 8.44
+	System time (seconds): 0.60
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.06
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1335196
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 386798
+	Voluntary context switches: 17
+	Involuntary context switches: 13
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+LRAT_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.06
+c parsed a formula with 3166041 variables and 10917087 clauses
+c VERIFIED
+c Added clauses = 11799433.  Deleted clauses = 11021992.  Max live clauses = 10917087
+c verification time = 9.01 secs
+c VERIFIED
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations,mark proof sec,dump lrat sec, ana sec, anamem mb
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/T82.2.0.cnf,	Maximum resident set size (kbytes): 4147160,	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:39.76,0,0,227076	/local_ssd/proof.lrat,	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.06,c restarts              : 624,c decisions             : 3653843        (0.00 % random) (13640 /sec),c conflicts             : 249627         (932 /sec),c propagations          : 390943897      (1459378 /sec),Marking proof: 0.664 seconds,c Dumping LRAT: 4.36 seconds,c Analyze time: 	5.024 seconds,c Analyze used disk storage:	2730.13 MB

@@ -1,0 +1,53 @@
+running picosat bench '/nfs/scratch/bzchartu/unsat_2018_solved/mchess_16.cnf' on cumu02-07
+s UNSATISFIABLE
+/local_ssd/pico.trace
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/picosat-965/picosat -L 50000 -t /local_ssd/pico.trace /nfs/scratch/bzchartu/unsat_2018_solved/mchess_16.cnf"
+	User time (seconds): 2960.06
+	System time (seconds): 26.86
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 49:47.23
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7042164
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 55178333
+	Voluntary context switches: 31
+	Involuntary context switches: 886
+	Swaps: 0
+	File system inputs: 40
+	File system outputs: 2580984
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+resolved 1 root and 1 empty clause
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/booleforce-1.3/tracecheck /local_ssd/pico.trace"
+	User time (seconds): 62.03
+	System time (seconds): 2.55
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:04.58
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2483392
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 3434125
+	Voluntary context switches: 10
+	Involuntary context switches: 42
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations,mark proof sec,dump lrat sec, ana sec, anamem mb
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/mchess_16.cnf,	Maximum resident set size (kbytes): 7042164,	Elapsed (wall clock) time (h:mm:ss or m:ss): 49:47.23,0,0,1290492	/local_ssd/pico.trace,	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:04.58,0,0,0,0,0,0,0,0

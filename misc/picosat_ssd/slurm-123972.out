@@ -1,0 +1,53 @@
+running picosat bench '/nfs/scratch/bzchartu/unsat_2018_solved/queen8_12.col.12.cnf' on cumu01-12
+s UNSATISFIABLE
+/local_ssd/pico.trace
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/picosat-965/picosat -L 50000 -t /local_ssd/pico.trace /nfs/scratch/bzchartu/unsat_2018_solved/queen8_12.col.12.cnf"
+	User time (seconds): 2372.72
+	System time (seconds): 20.24
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 39:52.99
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 6561256
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 40086980
+	Voluntary context switches: 36
+	Involuntary context switches: 629
+	Swaps: 0
+	File system inputs: 712
+	File system outputs: 3165256
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+resolved 1 root and 1 empty clause
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/booleforce-1.3/tracecheck /local_ssd/pico.trace"
+	User time (seconds): 85.41
+	System time (seconds): 4.38
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:29.79
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4260356
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6324784
+	Voluntary context switches: 10
+	Involuntary context switches: 63
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations,mark proof sec,dump lrat sec, ana sec, anamem mb
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/queen8_12.col.12.cnf,	Maximum resident set size (kbytes): 6561256,	Elapsed (wall clock) time (h:mm:ss or m:ss): 39:52.99,0,0,1582628	/local_ssd/pico.trace,	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:29.79,0,0,0,0,0,0,0,0

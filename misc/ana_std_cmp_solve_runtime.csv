@@ -1,0 +1,410 @@
+set multiplot layout 2,3 columnsfirst
+unset border
+unset key
+set tmargin at screen 0.9; set bmargin at screen 0.50
+set xrange [1:49]
+set yrange [0:184.0]
+unset xtics 
+set arrow 1 from 1,0 to 1,4.0 nohead linecolor "red"
+set arrow 2 from 2,0 to 2,4.0 nohead linecolor "red"
+set arrow 3 from 3,0 to 3,7.0 nohead linecolor "red"
+set arrow 4 from 4,0 to 4,11.0 nohead linecolor "red"
+set arrow 5 from 5,0 to 5,17.0 nohead linecolor "red"
+set arrow 6 from 6,0 to 6,17.0 nohead linecolor "red"
+set arrow 7 from 7,0 to 7,21.0 nohead linecolor "red"
+set arrow 8 from 8,0 to 8,37.0 nohead linecolor "red"
+set arrow 9 from 9,0 to 9,52.0 nohead linecolor "red"
+set arrow 10 from 10,0 to 10,59.0 nohead linecolor "red"
+set arrow 11 from 11,0 to 11,63.0 nohead linecolor "red"
+set arrow 12 from 12,0 to 12,63.0 nohead linecolor "red"
+set arrow 13 from 13,0 to 13,69.0 nohead linecolor "red"
+set arrow 14 from 14,0 to 14,69.0 nohead linecolor "red"
+set arrow 15 from 15,0 to 15,70.0 nohead linecolor "red"
+set arrow 16 from 16,0 to 16,71.0 nohead linecolor "red"
+set arrow 17 from 17,0 to 17,71.0 nohead linecolor "red"
+set arrow 18 from 18,0 to 18,72.0 nohead linecolor "red"
+set arrow 19 from 19,0 to 19,72.0 nohead linecolor "red"
+set arrow 20 from 20,0 to 20,73.0 nohead linecolor "red"
+set arrow 21 from 21,0 to 21,73.0 nohead linecolor "red"
+set arrow 22 from 22,0 to 22,73.0 nohead linecolor "red"
+set arrow 23 from 23,0 to 23,74.0 nohead linecolor "red"
+set arrow 24 from 24,0 to 24,74.0 nohead linecolor "red"
+set arrow 25 from 25,0 to 25,78.0 nohead linecolor "red"
+set arrow 26 from 26,0 to 26,80.0 nohead linecolor "red"
+set arrow 27 from 27,0 to 27,84.0 nohead linecolor "red"
+set arrow 28 from 28,0 to 28,93.0 nohead linecolor "red"
+set arrow 29 from 29,0 to 29,95.0 nohead linecolor "red"
+set arrow 30 from 30,0 to 30,98.0 nohead linecolor "red"
+set arrow 31 from 31,0 to 31,99.0 nohead linecolor "red"
+set arrow 32 from 32,0 to 32,106.0 nohead linecolor "red"
+set arrow 33 from 33,0 to 33,109.0 nohead linecolor "red"
+set arrow 34 from 34,0 to 34,113.0 nohead linecolor "red"
+set arrow 35 from 35,0 to 35,121.0 nohead linecolor "red"
+set arrow 36 from 36,0 to 36,122.0 nohead linecolor "red"
+set arrow 37 from 37,0 to 37,123.0 nohead linecolor "red"
+set arrow 38 from 38,0 to 38,125.0 nohead linecolor "red"
+set arrow 39 from 39,0 to 39,137.0 nohead linecolor "red"
+set arrow 40 from 40,0 to 40,140.0 nohead linecolor "red"
+set arrow 41 from 41,0 to 41,140.0 nohead linecolor "red"
+set arrow 42 from 42,0 to 42,145.0 nohead linecolor "red"
+set arrow 43 from 43,0 to 43,147.0 nohead linecolor "red"
+set arrow 44 from 44,0 to 44,158.0 nohead linecolor "red"
+set arrow 45 from 45,0 to 45,162.0 nohead linecolor "red"
+set arrow 46 from 46,0 to 46,173.0 nohead linecolor "red"
+set arrow 47 from 47,0 to 47,175.0 nohead linecolor "red"
+set arrow 48 from 48,0 to 48,184.0 nohead linecolor "red"
+plot x*5000000 ls 1 lc "red" title "drat overhead"
+set tmargin at screen 0.50; set bmargin at screen 0.1
+set yrange [184.0:0]
+unset arrow 1
+set arrow from 1,0 to 1,1.0 nohead  lc "blue"
+unset arrow 2
+set arrow from 2,0 to 2,2.0 nohead  lc "blue"
+unset arrow 3
+set arrow from 3,0 to 3,2.0 nohead  lc "blue"
+unset arrow 4
+set arrow from 4,0 to 4,1.0 nohead  lc "blue"
+unset arrow 5
+set arrow from 5,0 to 5,5.0 nohead  lc "blue"
+unset arrow 6
+set arrow from 6,0 to 6,23.0 nohead  lc "blue"
+unset arrow 7
+set arrow from 7,0 to 7,5.0 nohead  lc "blue"
+unset arrow 8
+set arrow from 8,0 to 8,28.0 nohead  lc "blue"
+unset arrow 9
+set arrow from 9,0 to 9,32.0 nohead  lc "blue"
+unset arrow 10
+set arrow from 10,0 to 10,15.0 nohead  lc "blue"
+unset arrow 11
+set arrow from 11,0 to 11,17.0 nohead  lc "blue"
+unset arrow 12
+set arrow from 12,0 to 12,18.0 nohead  lc "blue"
+unset arrow 13
+set arrow from 13,0 to 13,8.0 nohead  lc "blue"
+unset arrow 14
+set arrow from 14,0 to 14,19.0 nohead  lc "blue"
+unset arrow 15
+set arrow from 15,0 to 15,9.0 nohead  lc "blue"
+unset arrow 16
+set arrow from 16,0 to 16,15.0 nohead  lc "blue"
+unset arrow 17
+set arrow from 17,0 to 17,16.0 nohead  lc "blue"
+unset arrow 18
+set arrow from 18,0 to 18,12.0 nohead  lc "blue"
+unset arrow 19
+set arrow from 19,0 to 19,21.0 nohead  lc "blue"
+unset arrow 20
+set arrow from 20,0 to 20,13.0 nohead  lc "blue"
+unset arrow 21
+set arrow from 21,0 to 21,15.0 nohead  lc "blue"
+unset arrow 22
+set arrow from 22,0 to 22,21.0 nohead  lc "blue"
+unset arrow 23
+set arrow from 23,0 to 23,18.0 nohead  lc "blue"
+unset arrow 24
+set arrow from 24,0 to 24,21.0 nohead  lc "blue"
+unset arrow 25
+set arrow from 25,0 to 25,10.0 nohead  lc "blue"
+unset arrow 26
+set arrow from 26,0 to 26,14.0 nohead  lc "blue"
+unset arrow 27
+set arrow from 27,0 to 27,19.0 nohead  lc "blue"
+unset arrow 28
+set arrow from 28,0 to 28,14.0 nohead  lc "blue"
+unset arrow 29
+set arrow from 29,0 to 29,5.0 nohead  lc "blue"
+unset arrow 30
+set arrow from 30,0 to 30,19.0 nohead  lc "blue"
+unset arrow 31
+set arrow from 31,0 to 31,11.0 nohead  lc "blue"
+unset arrow 32
+set arrow from 32,0 to 32,6.0 nohead  lc "blue"
+unset arrow 33
+set arrow from 33,0 to 33,25.0 nohead  lc "blue"
+unset arrow 34
+set arrow from 34,0 to 34,18.0 nohead  lc "blue"
+unset arrow 35
+set arrow from 35,0 to 35,46.0 nohead  lc "blue"
+unset arrow 36
+set arrow from 36,0 to 36,19.0 nohead  lc "blue"
+unset arrow 37
+set arrow from 37,0 to 37,7.0 nohead  lc "blue"
+unset arrow 38
+set arrow from 38,0 to 38,58.0 nohead  lc "blue"
+unset arrow 39
+set arrow from 39,0 to 39,16.0 nohead  lc "blue"
+unset arrow 40
+set arrow from 40,0 to 40,11.0 nohead  lc "blue"
+unset arrow 41
+set arrow from 41,0 to 41,36.0 nohead  lc "blue"
+unset arrow 42
+set arrow from 42,0 to 42,7.0 nohead  lc "blue"
+unset arrow 43
+set arrow from 43,0 to 43,5.0 nohead  lc "blue"
+unset arrow 44
+set arrow from 44,0 to 44,62.0 nohead  lc "blue"
+unset arrow 45
+set arrow from 45,0 to 45,75.0 nohead  lc "blue"
+unset arrow 46
+set arrow from 46,0 to 46,21.0 nohead  lc "blue"
+unset arrow 47
+set arrow from 47,0 to 47,8.0 nohead  lc "blue"
+unset arrow 48
+set arrow from 48,0 to 48,35.0 nohead  lc "blue"
+plot x*0 ls 1 lc "blue" title "online trace overhead"
+unset arrow 1
+unset arrow 2
+unset arrow 3
+unset arrow 4
+unset arrow 5
+unset arrow 6
+unset arrow 7
+unset arrow 8
+unset arrow 9
+unset arrow 10
+unset arrow 11
+unset arrow 12
+unset arrow 13
+unset arrow 14
+unset arrow 15
+unset arrow 16
+unset arrow 17
+unset arrow 18
+unset arrow 19
+unset arrow 20
+unset arrow 21
+unset arrow 22
+unset arrow 23
+unset arrow 24
+unset arrow 25
+unset arrow 26
+unset arrow 27
+unset arrow 28
+unset arrow 29
+unset arrow 30
+unset arrow 31
+unset arrow 32
+unset arrow 33
+unset arrow 34
+unset arrow 35
+unset arrow 36
+unset arrow 37
+unset arrow 38
+unset arrow 39
+unset arrow 40
+unset arrow 41
+unset arrow 42
+unset arrow 43
+unset arrow 44
+unset arrow 45
+unset arrow 46
+unset arrow 47
+unset arrow 48
+set tmargin at screen 0.9; set bmargin at screen 0.50
+set xrange [49:85]
+set yrange [0:2468.0]
+unset xtics 
+set arrow 49 from 49,0 to 49,211.0 nohead linecolor "red"
+set arrow 50 from 50,0 to 50,218.0 nohead linecolor "red"
+set arrow 51 from 51,0 to 51,220.0 nohead linecolor "red"
+set arrow 52 from 52,0 to 52,244.0 nohead linecolor "red"
+set arrow 53 from 53,0 to 53,244.0 nohead linecolor "red"
+set arrow 54 from 54,0 to 54,250.0 nohead linecolor "red"
+set arrow 55 from 55,0 to 55,257.0 nohead linecolor "red"
+set arrow 56 from 56,0 to 56,271.0 nohead linecolor "red"
+set arrow 57 from 57,0 to 57,295.0 nohead linecolor "red"
+set arrow 58 from 58,0 to 58,318.0 nohead linecolor "red"
+set arrow 59 from 59,0 to 59,321.0 nohead linecolor "red"
+set arrow 60 from 60,0 to 60,332.0 nohead linecolor "red"
+set arrow 61 from 61,0 to 61,361.0 nohead linecolor "red"
+set arrow 62 from 62,0 to 62,395.0 nohead linecolor "red"
+set arrow 63 from 63,0 to 63,409.0 nohead linecolor "red"
+set arrow 64 from 64,0 to 64,415.0 nohead linecolor "red"
+set arrow 65 from 65,0 to 65,427.0 nohead linecolor "red"
+set arrow 66 from 66,0 to 66,438.0 nohead linecolor "red"
+set arrow 67 from 67,0 to 67,440.0 nohead linecolor "red"
+set arrow 68 from 68,0 to 68,452.0 nohead linecolor "red"
+set arrow 69 from 69,0 to 69,459.0 nohead linecolor "red"
+set arrow 70 from 70,0 to 70,473.0 nohead linecolor "red"
+set arrow 71 from 71,0 to 71,488.0 nohead linecolor "red"
+set arrow 72 from 72,0 to 72,493.0 nohead linecolor "red"
+set arrow 73 from 73,0 to 73,532.0 nohead linecolor "red"
+set arrow 74 from 74,0 to 74,602.0 nohead linecolor "red"
+set arrow 75 from 75,0 to 75,617.0 nohead linecolor "red"
+set arrow 76 from 76,0 to 76,979.0 nohead linecolor "red"
+set arrow 77 from 77,0 to 77,1434.0 nohead linecolor "red"
+set arrow 78 from 78,0 to 78,1458.0 nohead linecolor "red"
+set arrow 79 from 79,0 to 79,1739.0 nohead linecolor "red"
+set arrow 80 from 80,0 to 80,1847.0 nohead linecolor "red"
+set arrow 81 from 81,0 to 81,1934.0 nohead linecolor "red"
+set arrow 82 from 82,0 to 82,2206.0 nohead linecolor "red"
+set arrow 83 from 83,0 to 83,2312.0 nohead linecolor "red"
+set arrow 84 from 84,0 to 84,2468.0 nohead linecolor "red"
+plot x*5000000 ls 1 lc "red" title "drat overhead"
+set tmargin at screen 0.50; set bmargin at screen 0.1
+set yrange [2468.0:0]
+unset arrow 49
+set arrow from 49,0 to 49,11.0 nohead  lc "blue"
+unset arrow 50
+set arrow from 50,0 to 50,36.0 nohead  lc "blue"
+unset arrow 51
+set arrow from 51,0 to 51,93.0 nohead  lc "blue"
+unset arrow 52
+set arrow from 52,0 to 52,27.0 nohead  lc "blue"
+unset arrow 53
+set arrow from 53,0 to 53,90.0 nohead  lc "blue"
+unset arrow 54
+set arrow from 54,0 to 54,91.0 nohead  lc "blue"
+unset arrow 55
+set arrow from 55,0 to 55,15.0 nohead  lc "blue"
+unset arrow 56
+set arrow from 56,0 to 56,114.0 nohead  lc "blue"
+unset arrow 57
+set arrow from 57,0 to 57,15.0 nohead  lc "blue"
+unset arrow 58
+set arrow from 58,0 to 58,71.0 nohead  lc "blue"
+unset arrow 59
+set arrow from 59,0 to 59,13.0 nohead  lc "blue"
+unset arrow 60
+set arrow from 60,0 to 60,128.0 nohead  lc "blue"
+unset arrow 61
+set arrow from 61,0 to 61,10.0 nohead  lc "blue"
+unset arrow 62
+set arrow from 62,0 to 62,87.0 nohead  lc "blue"
+unset arrow 63
+set arrow from 63,0 to 63,10.0 nohead  lc "blue"
+unset arrow 64
+set arrow from 64,0 to 64,78.0 nohead  lc "blue"
+unset arrow 65
+set arrow from 65,0 to 65,91.0 nohead  lc "blue"
+unset arrow 66
+set arrow from 66,0 to 66,100.0 nohead  lc "blue"
+unset arrow 67
+set arrow from 67,0 to 67,108.0 nohead  lc "blue"
+unset arrow 68
+set arrow from 68,0 to 68,105.0 nohead  lc "blue"
+unset arrow 69
+set arrow from 69,0 to 69,13.0 nohead  lc "blue"
+unset arrow 70
+set arrow from 70,0 to 70,21.0 nohead  lc "blue"
+unset arrow 71
+set arrow from 71,0 to 71,19.0 nohead  lc "blue"
+unset arrow 72
+set arrow from 72,0 to 72,45.0 nohead  lc "blue"
+unset arrow 73
+set arrow from 73,0 to 73,152.0 nohead  lc "blue"
+unset arrow 74
+set arrow from 74,0 to 74,20.0 nohead  lc "blue"
+unset arrow 75
+set arrow from 75,0 to 75,27.0 nohead  lc "blue"
+unset arrow 76
+set arrow from 76,0 to 76,76.0 nohead  lc "blue"
+unset arrow 77
+set arrow from 77,0 to 77,126.0 nohead  lc "blue"
+unset arrow 78
+set arrow from 78,0 to 78,39.0 nohead  lc "blue"
+unset arrow 79
+set arrow from 79,0 to 79,272.0 nohead  lc "blue"
+unset arrow 80
+set arrow from 80,0 to 80,46.0 nohead  lc "blue"
+unset arrow 81
+set arrow from 81,0 to 81,68.0 nohead  lc "blue"
+unset arrow 82
+set arrow from 82,0 to 82,275.0 nohead  lc "blue"
+unset arrow 83
+set arrow from 83,0 to 83,63.0 nohead  lc "blue"
+unset arrow 84
+set arrow from 84,0 to 84,58.0 nohead  lc "blue"
+plot x*0 ls 1 lc "blue" title "online trace overhead"
+unset arrow 49
+unset arrow 50
+unset arrow 51
+unset arrow 52
+unset arrow 53
+unset arrow 54
+unset arrow 55
+unset arrow 56
+unset arrow 57
+unset arrow 58
+unset arrow 59
+unset arrow 60
+unset arrow 61
+unset arrow 62
+unset arrow 63
+unset arrow 64
+unset arrow 65
+unset arrow 66
+unset arrow 67
+unset arrow 68
+unset arrow 69
+unset arrow 70
+unset arrow 71
+unset arrow 72
+unset arrow 73
+unset arrow 74
+unset arrow 75
+unset arrow 76
+unset arrow 77
+unset arrow 78
+unset arrow 79
+unset arrow 80
+unset arrow 81
+unset arrow 82
+unset arrow 83
+unset arrow 84
+set tmargin at screen 0.9; set bmargin at screen 0.50
+set xrange [85:100]
+set yrange [0:24706.0]
+unset xtics 
+set arrow 85 from 85,0 to 85,3090.0 nohead linecolor "red"
+set arrow 86 from 86,0 to 86,3267.0 nohead linecolor "red"
+set arrow 87 from 87,0 to 87,3810.0 nohead linecolor "red"
+set arrow 88 from 88,0 to 88,4174.0 nohead linecolor "red"
+set arrow 89 from 89,0 to 89,4196.0 nohead linecolor "red"
+set arrow 90 from 90,0 to 90,4687.0 nohead linecolor "red"
+set arrow 91 from 91,0 to 91,4854.0 nohead linecolor "red"
+set arrow 92 from 92,0 to 92,6609.0 nohead linecolor "red"
+set arrow 93 from 93,0 to 93,7396.0 nohead linecolor "red"
+set arrow 94 from 94,0 to 94,8159.0 nohead linecolor "red"
+set arrow 95 from 95,0 to 95,9402.0 nohead linecolor "red"
+set arrow 96 from 96,0 to 96,18713.0 nohead linecolor "red"
+set arrow 97 from 97,0 to 97,21177.0 nohead linecolor "red"
+set arrow 98 from 98,0 to 98,21661.0 nohead linecolor "red"
+set arrow 99 from 99,0 to 99,24706.0 nohead linecolor "red"
+plot x*5000000 ls 1 lc "red" title "drat overhead"
+set tmargin at screen 0.50; set bmargin at screen 0.1
+set yrange [24706.0:0]
+unset arrow 85
+set arrow from 85,0 to 85,60.0 nohead  lc "blue"
+unset arrow 86
+set arrow from 86,0 to 86,83.0 nohead  lc "blue"
+unset arrow 87
+set arrow from 87,0 to 87,130.0 nohead  lc "blue"
+unset arrow 88
+set arrow from 88,0 to 88,308.0 nohead  lc "blue"
+unset arrow 89
+set arrow from 89,0 to 89,45.0 nohead  lc "blue"
+unset arrow 90
+set arrow from 90,0 to 90,88.0 nohead  lc "blue"
+unset arrow 91
+set arrow from 91,0 to 91,1168.0 nohead  lc "blue"
+unset arrow 92
+set arrow from 92,0 to 92,132.0 nohead  lc "blue"
+unset arrow 93
+set arrow from 93,0 to 93,64.0 nohead  lc "blue"
+unset arrow 94
+set arrow from 94,0 to 94,276.0 nohead  lc "blue"
+unset arrow 95
+set arrow from 95,0 to 95,214.0 nohead  lc "blue"
+unset arrow 96
+set arrow from 96,0 to 96,381.0 nohead  lc "blue"
+unset arrow 97
+set arrow from 97,0 to 97,346.0 nohead  lc "blue"
+unset arrow 98
+set arrow from 98,0 to 98,547.0 nohead  lc "blue"
+unset arrow 99
+set arrow from 99,0 to 99,165.0 nohead  lc "blue"
+plot x*0 ls 1 lc "blue" title "online trace overhead"
+unset multiplot
+pause -1

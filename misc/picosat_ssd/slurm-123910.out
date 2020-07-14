@@ -1,0 +1,53 @@
+running picosat bench '/nfs/scratch/bzchartu/unsat_2018_solved/avg_true-unreach-call.i.cnf' on cumu01-13
+s UNSATISFIABLE
+/local_ssd/pico.trace
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/picosat-965/picosat -L 50000 -t /local_ssd/pico.trace /nfs/scratch/bzchartu/unsat_2018_solved/avg_true-unreach-call.i.cnf"
+	User time (seconds): 8130.92
+	System time (seconds): 325.06
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:20:55
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 34753560
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 713601574
+	Voluntary context switches: 45
+	Involuntary context switches: 9171
+	Swaps: 0
+	File system inputs: 12368
+	File system outputs: 6159368
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+resolved 1 root and 1 empty clause
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/booleforce-1.3/tracecheck /local_ssd/pico.trace"
+	User time (seconds): 112.24
+	System time (seconds): 3.61
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:55.84
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2726024
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 4109698
+	Voluntary context switches: 13
+	Involuntary context switches: 56
+	Swaps: 0
+	File system inputs: 96
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations,mark proof sec,dump lrat sec, ana sec, anamem mb
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/avg_true-unreach-call.i.cnf,	Maximum resident set size (kbytes): 34753560,	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:20:55,0,0,3079684	/local_ssd/pico.trace,	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:55.84,0,0,0,0,0,0,0,0

@@ -1,0 +1,136 @@
+SOLVERNAME,STD
+BENCHNAME,/nfs/scratch/bzchartu/unsat_2018_solved/dist5.c.cnf
+running lrb Bench '/nfs/scratch/bzchartu/unsat_2018_solved/dist5.c.cnf' on cumu02-09
+Command exited with non-zero status 20
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/sources/simp/glucose_release -det=lrb /nfs/scratch/bzchartu/unsat_2018_solved/dist5.c.cnf -cpu-lim=10000 -drup-file=/local_ssd/proof.drat"
+	User time (seconds): 125.99
+	System time (seconds): 0.11
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:06.91
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 40548
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3
+	Minor (reclaiming a frame) page faults: 52038
+	Voluntary context switches: 64
+	Involuntary context switches: 122
+	Swaps: 0
+	File system inputs: 41352
+	File system outputs: 237768
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 20
+SOLVE_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:06.91
+c This is MapleLCMDistChronoBT.
+c WARNING: for repeatability, setting FPU to use double precision
+c Analyzer is deactivated by mode: 1 and dyn: 1
+c ============================[ Problem Statistics ]=============================
+c |                                                                             |
+c |  Number of variables:         15256                                         |
+c |  Number of clauses:           68104                                         |
+c |  Parse time:                   0.05 s                                       |
+c |  Eliminated clauses:           0.23 Mb                                      |
+c Reduced to 10322 vars, 55088 cls (grow=0)
+c |  Eliminated clauses:           0.48 Mb                                      |
+c Reduced to 7411 vars, 55082 cls (grow=8)
+c cl_inc_rate=1.000, var_dec_rate=1.393
+c |  Eliminated clauses:           0.53 Mb                                      |
+c Reduced to 7025 vars, 57793 cls (grow=16)
+c cl_inc_rate=1.049, var_dec_rate=1.055
+c |  Eliminated clauses:           0.68 Mb                                      |
+c Reduced to 6003 vars, 78099 cls (grow=32)
+c cl_inc_rate=1.351, var_dec_rate=1.170
+c No. effective iterative eliminations: 3
+c |  Simplification time:          0.32 s                                       |
+c |                                                                             |
+c running deterministic with LRB
+c ============================[ Search Statistics ]==============================
+c | Conflicts |          ORIGINAL         |          LEARNT          | Progress |
+c |           |    Vars  Clauses Literals |    Limit  Clauses Lit/Cl |          |
+c ===============================================================================
+c ===============================================================================
+c restarts              : 1912
+c conflicts             : 867185         (6883 /sec)
+c decisions             : 1751878        (0.00 % random) (13905 /sec)
+c propagations          : 328389911      (2606435 /sec)
+c conflict literals     : 23630043       (71.21 % deleted)
+c backtracks            : 867087         (NCB 100% , CB 0%)
+c Memory used           : 53.00 MB
+c CPU time              : 125.992 s
+
+s UNSATISFIABLE
+DRAT_SIZE: 118876	/local_ssd/proof.drat
+s UNSATISFIABLE
+/local_ssd/proof.drat
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/drat-trim/drat-trim /nfs/scratch/bzchartu/unsat_2018_solved/dist5.c.cnf /local_ssd/proof.drat -L /local_ssd/proof.lrat -t 200000"
+	User time (seconds): 389.76
+	System time (seconds): 6.69
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:37.39
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 3891576
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 2194274
+	Voluntary context switches: 180
+	Involuntary context switches: 195
+	Swaps: 0
+	File system inputs: 88
+	File system outputs: 12533688
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+DRAT_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:37.39
+c turning on binary mode checking
+c parsing input formula with 15256 variables and 68124 clauses
+c finished parsing, read 121728318 bytes from proof file
+c detected empty clause; start verification via backward checking
+c 21303 of 68124 clauses in core                            
+c 757918 of 1068009 lemmas in core using 930914281 resolution steps
+c 0 RAT lemmas in core; 8 redundant literals in core lemmas
+s VERIFIED
+c verification time: 397.282 seconds
+LRAT_SIZE: 6266844	/local_ssd/proof.lrat
+s VERIFIED
+/local_ssd/proof.lrat
+	Command being timed: "/nfs/scratch/bzchartu/programs/maplechronobt_proof_analyze/drat-trim/lrat-check /nfs/scratch/bzchartu/unsat_2018_solved/dist5.c.cnf /local_ssd/proof.lrat"
+	User time (seconds): 134.84
+	System time (seconds): 1.36
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:16.32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 83252
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 43011
+	Voluntary context switches: 30
+	Involuntary context switches: 193
+	Swaps: 0
+	File system inputs: 32
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+LRAT_W_TIME,	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:16.32
+c parsed a formula with 15256 variables and 68124 clauses
+c VERIFIED
+c Added clauses = 826042.  Deleted clauses = 823892.  Max live clauses = 68124
+c verification time = 136.22 secs
+c VERIFIED
+OVERVIEW_HEADER,benchmark,solve mem,solve time,drat kb,drat sec,lrat kb,lrat sec,restarts,decisions,conflicts,propagations
+OVERVIEW_CSV,/nfs/scratch/bzchartu/unsat_2018_solved/dist5.c.cnf,	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:06.91,	Maximum resident set size (kbytes): 40548,118876	/local_ssd/proof.drat,	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:37.39,6266844	/local_ssd/proof.lrat,	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:16.32,c restarts              : 1912,c decisions             : 1751878        (0.00 % random) (13905 /sec),c conflicts             : 867185         (6883 /sec),c propagations          : 328389911      (2606435 /sec)

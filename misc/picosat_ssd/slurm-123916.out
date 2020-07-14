@@ -1,0 +1,28 @@
+running picosat bench '/nfs/scratch/bzchartu/unsat_2018_solved/cms-scheel-md5-families-r24-c5-p6-11-15-16-19.cnf' on cumu02-03
+s UNKNOWN
+ls: Zugriff auf '/local_ssd/pico.trace' nicht möglich: Datei oder Verzeichnis nicht gefunden
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/picosat-965/picosat -L 50000 -t /local_ssd/pico.trace /nfs/scratch/bzchartu/unsat_2018_solved/cms-scheel-md5-families-r24-c5-p6-11-15-16-19.cnf"
+	User time (seconds): 19429.69
+	System time (seconds): 4238.26
+	Percent of CPU this job got: 45%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 14:29:59
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 64806020
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 53505924
+	Minor (reclaiming a frame) page faults: 4800858345
+	Voluntary context switches: 54178676
+	Involuntary context switches: 33635
+	Swaps: 0
+	File system inputs: 2820560256
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+NOT FINISHED: solution not found (02)
+rm: das Entfernen von '/local_ssd/pico.trace' ist nicht möglich: Datei oder Verzeichnis nicht gefunden

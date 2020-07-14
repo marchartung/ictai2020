@@ -1,0 +1,28 @@
+running picosat bench '/nfs/scratch/bzchartu/unsat_2018_solved/filter1_true-unreach-call.c.cnf' on cumu02-01
+s UNKNOWN
+ls: Zugriff auf '/local_ssd/pico.trace' nicht möglich: Datei oder Verzeichnis nicht gefunden
+	Command being timed: "/nfs/scratch/bzchartu/programs/pico_test/picosat-965/picosat -L 50000 -t /local_ssd/pico.trace /nfs/scratch/bzchartu/unsat_2018_solved/filter1_true-unreach-call.c.cnf"
+	User time (seconds): 42588.78
+	System time (seconds): 4426.83
+	Percent of CPU this job got: 92%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 14:03:49
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 64849260
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 17617855
+	Minor (reclaiming a frame) page faults: 8023467144
+	Voluntary context switches: 17656349
+	Involuntary context switches: 69175
+	Swaps: 0
+	File system inputs: 1061774600
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+NOT FINISHED: solution not found (02)
+rm: das Entfernen von '/local_ssd/pico.trace' ist nicht möglich: Datei oder Verzeichnis nicht gefunden
