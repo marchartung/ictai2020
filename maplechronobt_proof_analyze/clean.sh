@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXEC_DIR="maplechronobt_proof_analyze/simp"
+EXEC_DIR="sources/simp"
 
 cd $EXEC_DIR
 make clean

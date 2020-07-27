@@ -117,7 +117,6 @@ lbool SimpSolver::solve_(bool do_simp, bool turn_off_simp) {
 	if (result == l_True)
 		result = Solver::solve_();
 	else {
-		analyzer.notifySolution(result);
 		if (verbosity >= 1)
 			printf(
 					"c ===============================================================================\n");
@@ -197,7 +196,7 @@ void SimpSolver::removeClause(CRef cr) {
 
 bool SimpSolver::strengthenClause(CRef cr, Lit l) {
 	Clause& c = ca[cr];
-	addResolvent(c);
+	addHint(c);
 	assert(decisionLevel() == 0);
 	assert(use_simplification);
 
@@ -266,8 +265,8 @@ bool SimpSolver::merge(const Clause& _ps, const Clause& _qs, Var v,
 		}
 		next: ;
 	}
-	addResolvent(_ps);
-	addResolvent(_qs);
+	addHint(_ps);
+	addHint(_qs);
 	for (int i = 0; i < ps.size(); i++)
 		if (var(ps[i]) != v)
 			out_clause.push(ps[i]);
@@ -409,9 +408,9 @@ bool SimpSolver::backwardSubsumptionCheck(bool verbose) {
 				else if (l != lit_Error) {
 					deleted_literals++;
 					if (c.size() == 1)
-						addResolvent(c[0]);
+						addHint(c[0]);
 					else
-						addResolvent(c);
+						addHint(c);
 					if (!strengthenClause(cs[j], ~l))
 						return false;
 
@@ -699,8 +698,6 @@ bool SimpSolver::eliminate(bool turn_off_elim) {
 	// Force full cleanup (this is safe and desirable since it only happens once):
 	rebuildOrderHeap();
 	garbageCollect();
-	if(!res)
-		analyzer.notifySolution(l_False);
 #ifdef BIN_DRUP
 	binDRUP_flush(drup_file);
 #endif

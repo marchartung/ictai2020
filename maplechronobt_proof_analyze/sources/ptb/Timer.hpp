@@ -5,8 +5,8 @@
  *      Author: hartung
  */
 
-#ifndef SOURCES_COMPLETESATANALYZER_TIMER_HPP_
-#define SOURCES_COMPLETESATANALYZER_TIMER_HPP_
+#ifndef SOURCES_PTB_TIMER_HPP_
+#define SOURCES_PTB_TIMER_HPP_
 
 
 #include <chrono>
@@ -54,4 +54,4 @@ class Timer
 }
 
 
-#endif /* SOURCES_COMPLETESATANALYZER_TIMER_HPP_ */
+#endif /* SOURCES_PTB_TIMER_HPP_ */

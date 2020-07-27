@@ -8,9 +8,9 @@
 #ifndef SOURCES_COMPLETESATANALYZER_TMPVARSTATE_H_
 #define SOURCES_COMPLETESATANALYZER_TMPVARSTATE_H_
 
-#include "ClauseDatabase.h"
+#include "ClauseUsageTypes.hpp"
 
-namespace CompleteSatAnalyzer {
+namespace PTB {
 
 class TmpVarStates {
 public:
@@ -20,8 +20,8 @@ public:
 	}
 
 	void resize(int const n) {
-		seen.growTo(n);
-		varDepend.growTo(n, -1);
+		seen.resize(n);
+		varDepend.resize(n, -1);
 	}
 
 	int size() const
@@ -36,13 +36,13 @@ public:
 	void setSeen(int const v) {
 		assert(!seen[v]);
 		seen[v] = true;
-		toClear.push(v);
+		toClear.push_back(v);
 	}
 
 	void setMaxDeps(int const n) {
-		for (int i = 0; i < nClDeps.size(); ++i)
+		for (unsigned i = 0; i < nClDeps.size(); ++i)
 			assert(nClDeps[i] == 0);
-		nClDeps.growTo(n, 0);
+		nClDeps.resize(n, 0);
 		curTmpStore = 0;
 	}
 
@@ -50,11 +50,11 @@ public:
 
 		if (varDepend[v] == -1) {
 			if (tmpCidStorage.size() == curTmpStore)
-				tmpCidStorage.push();
+				tmpCidStorage.push_back(decltype(tmpCidStorage)::value_type());
 			tmpCidStorage[curTmpStore].clear();
 			varDepend[v] = curTmpStore++;
 		}
-		tmpCidStorage[varDepend[v]].push(cid);
+		tmpCidStorage[varDepend[v]].push_back(cid);
 		++nClDeps[cid];
 	}
 
@@ -69,7 +69,7 @@ public:
 		return --nClDeps[cid];
 	}
 
-	vec<unsigned> const & varDeps(int const v) {
+	std::vector<unsigned> const & varDeps(int const v) {
 		assert(varDepend[v] != -1);
 		return tmpCidStorage[varDepend[v]];
 	}
@@ -80,23 +80,23 @@ public:
 	}
 
 	void clear() {
-		for (int i = 0; i < toClear.size(); ++i) {
+		for (unsigned i = 0; i < toClear.size(); ++i) {
 			seen[toClear[i]] = 0;
 			varDepend[toClear[i]] = -1;
 		}
-		for(int i=0;i<nClDeps.size();++i)
+		for(unsigned i=0;i<nClDeps.size();++i)
 			assert(nClDeps[i] == 0);
 		toClear.clear();
 		curTmpStore = 0;
 	}
 
 private:
-	int curTmpStore;
-	vec<bool> seen;
-	vec<int> varDepend;
-	vec<int> nClDeps;
-	vec<vec<unsigned>> tmpCidStorage;
-	vec<int> toClear;
+	unsigned curTmpStore;
+	std::vector<bool> seen;
+	std::vector<int> varDepend;
+	std::vector<int> nClDeps;
+	std::vector<std::vector<unsigned>> tmpCidStorage;
+	std::vector<int> toClear;
 
 };
 

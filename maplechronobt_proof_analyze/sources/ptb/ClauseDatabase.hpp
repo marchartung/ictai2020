@@ -13,22 +13,19 @@
 #include <cstdint>
 #include <algorithm>
 
-#include "MmapVector.h"
-#include "ClauseUsageTypes.h"
+#include "ClauseUsageTypes.hpp"
+#include "MmapStorage.hpp"
 
-namespace CompleteSatAnalyzer {
+namespace PTB {
 
 enum class ClauseOrigin {
 	INITIAL = 0,
-	UIP1 = 1,
-	MULTI_UIP = 2,
-	MULTI_CONFLICT = 3,
-	UPPER_MIN_CUT = 4,
-	LF1 = 5,
-	PREPROCESSING = 6,
-	VIVIFICATION = 7,
-	REDUNDANT = 8,
-	UNDEF = 9 // insert new group before undef and change numbers
+	ORDERED = 1,
+	UNORDERED = 2,
+	RAT = 3,
+	REDUNDANT = 4,
+	DELETE = 5,
+	UNDEF = 6 // insert new group before undef and change numbers
 };
 
 inline constexpr uint8_t groupToInt(ClauseOrigin const o) {
@@ -47,37 +44,7 @@ inline std::string substr(std::string const & str,
 			(eP != std::string::npos) ? eP - sP : std::string::npos);
 }
 
-inline std::string groupToString(ClauseOrigin const o) {
-	switch (o) {
-	case ClauseOrigin::INITIAL:
-		return "Initial";
-	case ClauseOrigin::UIP1:
-		return "1UIP";
-	case ClauseOrigin::MULTI_UIP:
-		return "Multi UIP";
-	case ClauseOrigin::MULTI_CONFLICT:
-		return "Multi Conflict";
-	case ClauseOrigin::UPPER_MIN_CUT:
-		return "Upper Min Cut";
-	case ClauseOrigin::LF1:
-		return "LF1";
-	case ClauseOrigin::PREPROCESSING:
-		return "Preprocessor";
-	case ClauseOrigin::VIVIFICATION:
-		return "Vivification";
-	case ClauseOrigin::REDUNDANT:
-		return "Proof Linking Units";
-	default:
-		return "Undefined";
-	}
 
-}
-
-inline std::string groupIdToString(unsigned const id) {
-	return groupToString(intToGroup(id));
-}
-
-typedef uint64_t Cid;
 
 template<typename IntType, unsigned nBit>
 constexpr IntType trimToMaxBit(IntType const & in) {
@@ -122,9 +89,8 @@ struct Cid_Internal {
 	}
 
 	uint64_t fId :2;
-	uint64_t groupId :CA_CID_INTERNAL_GROUPID_BITS;
-	uint64_t lbdId :CA_CID_INTERNAL_LBD_BITS;
-	uint64_t id :54;
+	uint64_t type : 4;
+	uint64_t id :58;
 
 	static Cid_Internal const & cast(uint64_t const & ui) {
 		return *reinterpret_cast<Cid_Internal const *>(&ui);
@@ -134,28 +100,27 @@ struct Cid_Internal {
 		return *reinterpret_cast<Cid_Internal *>(&ui);
 	}
 
-	uint64_t const & toUint() const {
+	Cid const & toUint() const {
 		return *reinterpret_cast<uint64_t const *>(this);
 	}
 
-	uint64_t & toUint() {
+	Cid & toUint() {
 		return *reinterpret_cast<uint64_t *>(this);
 	}
 
-	static uint64_t create(unsigned const fId, ClauseOrigin const o,
-			unsigned const lbd, uint64_t const id) {
-		return Cid_Internal(fId, o, lbd, id).toUint();
+	static Cid create(unsigned const fId, ClauseOrigin const o,
+			uint64_t const id) {
+		return Cid_Internal(fId, o, id).toUint();
 	}
 
-	static uint64_t undef() {
+	static Cid undef() {
 		return std::numeric_limits<uint64_t>::max();
 	}
 
 private:
-	Cid_Internal(unsigned const fId, ClauseOrigin const o, unsigned const lbd,
+	Cid_Internal(unsigned const fId, ClauseOrigin const o,
 			uint64_t const id) :
-			fId(fId), groupId(groupToInt(o)), lbdId(
-					(lbd < maxTrackedLbd) ? lbd : maxTrackedLbd), id(id) {
+			fId(fId), type(groupToInt(o)), id(id) {
 		assert(fId < 4);
 	}
 };
@@ -163,19 +128,16 @@ static_assert(sizeof(Cid) == sizeof(Cid_Internal), "ClauseDatabase: Cid and Cid_
 
 static Cid const Cid_Undef = Cid_Internal::undef();
 
+template<typename Lit>
 struct Clause {
 
 private:
 
 	struct Header {
-		uint16_t usedInProof :1;
-		uint16_t deleteClause :1;
-		uint16_t groupId :14;
-		uint16_t lbd;
+		uint16_t usedInProof;
+		uint16_t type;
 		uint32_t csz;
-		uint32_t rsz;
-		uint32_t level;
-		uint32_t nOpen;
+		uint32_t hsz;
 		uint32_t proofId;
 	} h;
 	static_assert(sizeof(Header) % 8 == 0,"clause should be at least 64bit aligned");
@@ -184,29 +146,17 @@ private:
 public:
 	typedef uint32_t size_type;
 
-	uint32_t getLbd() const {
-		return h.lbd;
-	}
-
 	inline size_type nLits() const {
 		return h.csz;
 	}
 
-	uint32_t getGroupInt() const {
-		return h.groupId;
+
+	ClauseOrigin getType() const {
+		return intToGroup(h.type);
 	}
 
-	ClauseOrigin getGroup() const {
-		return intToGroup(getGroupInt());
-	}
-
-	void markRemoved() {
-		assert(!isDeleteClause());
-		setDeleteClause(true);
-	}
-
-	void setGroup(ClauseOrigin const o) {
-		h.groupId = groupToInt(o);
+	void setType(ClauseOrigin const o) {
+		h.type = groupToInt(o);
 	}
 
 	void setProofId(uint32_t const id) {
@@ -221,28 +171,24 @@ public:
 		h.csz = n;
 	}
 
-	void setOpen(uint32_t const v) {
-		h.nOpen = v;
+	bool isUnordered() const {
+		return getType() == ClauseOrigin::UNORDERED;
 	}
 
-	void setOpenResolved(uint32_t const nOpenResolved) {
-		h.nOpen = nOpenResolved;
+
+	bool isDeleteClause() const {
+		return getType() == ClauseOrigin::DELETE;
 	}
 
-	bool isOpenResolved() const {
-		return h.nOpen > 0;
+	bool isRat() const {
+		return getType() == ClauseOrigin::RAT;
 	}
 
-	bool isAsserting() const {
-		assert(h.nOpen > 0);
-		return h.nOpen == 1;
+	void setNumHints(size_type const n) {
+		h.hsz = n;
 	}
 
-	void setNumResolvents(size_type const n) {
-		h.rsz = n;
-	}
-
-	int size() const {
+	unsigned size() const {
 		return h.csz;
 	}
 
@@ -250,8 +196,8 @@ public:
 		return getLit(idx);
 	}
 
-	size_type nResolvents() const {
-		return h.rsz;
+	size_type nHints() const {
+		return h.hsz;
 	}
 
 	inline Lit const * lbegin() const {
@@ -277,44 +223,24 @@ public:
 	}
 
 	inline Cid const * rend() const {
-		return resolvents() + h.rsz;
+		return resolvents() + h.hsz;
 	}
 
-	Cid const& getResolvent(size_type const &idx) const {
-		assert(idx < h.rsz);
+	Cid const& getHint(size_type const &idx) const {
+		assert(idx < h.hsz);
 		return resolvents()[idx];
 	}
 
-	Cid& getResolvent(size_type const &idx) {
-		assert(idx < h.rsz);
+	Cid& getHint(size_type const &idx) {
+		assert(idx < h.hsz);
 		assert(
-				reinterpret_cast<char const*>(this) + nBytes(h.csz, h.rsz)
-						>= reinterpret_cast<char const*>(resolvents() + h.rsz));
+				reinterpret_cast<char const*>(this) + nBytes(h.csz, h.hsz)
+						>= reinterpret_cast<char const*>(resolvents() + h.hsz));
 		return resolvents()[idx];
 	}
 
 	void setUsedInProof(bool const b) {
 		h.usedInProof = b;
-	}
-
-	void setLbd(unsigned const l) {
-		h.lbd = trimToMaxBit<uint32_t, 16>(l);
-	}
-
-	void setLevel(uint64_t const &lvl) {
-		h.level = lvl;
-	}
-
-	void setDeleteClause(bool const b) {
-		h.deleteClause = b;
-	}
-
-	bool isDeleteClause() const {
-		return h.deleteClause;
-	}
-
-	uint64_t getLevel() const {
-		return h.level;
 	}
 
 	bool isUsedInProof() const {
@@ -361,23 +287,7 @@ private:
 	}
 };
 
-class ClauseView {
-public:
-	ClauseView(Clause const &c) :
-			c(c) {
-	}
-
-	int size() const {
-		return c.nLits();
-	}
-
-	Lit const& operator[](int const idx) const {
-		return c.getLit(idx);
-	}
-private:
-	Clause const &c;
-};
-
+template<typename Lit>
 class ClauseDatabase {
 public:
 
@@ -390,6 +300,17 @@ public:
 	}
 
 	~ClauseDatabase() {
+	}
+
+	Cid markRat(Cid const & cid)
+	{
+		Cid_Internal const & ci = Cid_Internal::cast(cid);
+		return Cid_Internal::create(ci.fId,ClauseOrigin::RAT, ci.id);
+	}
+
+	bool isRat(Cid const & cid) const
+	{
+		return static_cast<ClauseOrigin>(Cid_Internal::cast(cid).type) == ClauseOrigin::RAT;
 	}
 
 	void createFromConfigString(std::string const & configString) {
@@ -436,61 +357,56 @@ public:
 			throw NotEnoughDiskSpaceException();
 		}
 		return Cid_Internal::cast(
-				Cid_Internal::create(curDataId, ClauseOrigin::UNDEF, 0, res));
+				Cid_Internal::create(curDataId, ClauseOrigin::UNDEF, res));
 	}
 
-	void addDeleteClause(const uint64_t conflictNum, Cid const cid) {
+	void addDeleteClause(Cid const cid) {
 		++nClauses;
-		size_type nBytes = Clause::nBytes(0, 1);
+		size_type nBytes = Clause<Lit>::nBytes(0, 1);
 		Cid_Internal const pos = allocateStorage(nBytes);
-		Clause &newClause = getClause(pos);
+		Clause<Lit> &newClause = getClause(pos);
 		newClause.setUsedInProof(false);
-		newClause.setDeleteClause(true);
-		newClause.setGroup(intToGroup(getGroupIntFast(cid)));
+		newClause.setType(ClauseOrigin::DELETE);
 		newClause.setNumLits(0);
-		newClause.setNumResolvents(1);
-		newClause.setOpen(0);
+		newClause.setNumHints(1);
 		newClause.setProofId(std::numeric_limits<uint32_t>::max());
 
-		newClause.getResolvent(0) = cid;
+		newClause.getHint(0) = cid;
 	}
 
 	template<typename ClauseType, typename CidVec>
-	Cid addClause(const uint64_t conflictNum, ClauseType const &c,
-			CidVec const &resolutions, unsigned const lbd, unsigned const nOpen,
+	Cid addClause(ClauseType const &c,
+			CidVec const &resolutions,
 			ClauseOrigin const origin) {
 		++nClauses;
-		size_type nBytes = Clause::nBytes(c.size(), resolutions.size());
+		size_type nBytes = Clause<Lit>::nBytes(c.size(), resolutions.size());
 		Cid_Internal const pos = allocateStorage(nBytes);
-		Clause &newClause = getClause(pos);
+		Clause<Lit> &newClause = getClause(pos);
 
 		newClause.setUsedInProof(false);
-		newClause.setDeleteClause(false);
-		newClause.setGroup(origin);
-		newClause.setLbd(lbd);
+		newClause.setType(origin);
 		newClause.setNumLits(c.size());
-		newClause.setNumResolvents(resolutions.size());
-		newClause.setOpen(nOpen);
+		newClause.setNumHints(resolutions.size());
 		newClause.setProofId(std::numeric_limits<uint32_t>::max());
 
-		for (Clause::size_type i = 0; i < newClause.nLits(); ++i) {
+		for (typename Clause<Lit>::size_type i = 0; i < newClause.nLits(); ++i) {
 			newClause.getLit(i) = c[i];
 		}
-		for (Clause::size_type i = 0; i < newClause.nResolvents(); ++i)
-			newClause.getResolvent(i) = resolutions[i];
+		for (typename Clause<Lit>::size_type i = 0; i < newClause.nHints(); ++i)
+			newClause.getHint(i) = resolutions[i];
 
-		return Cid_Internal::create(pos.fId, origin, lbd, pos.id);
+		return Cid_Internal::create(pos.fId, origin, pos.id);
 	}
 
 	void setUsedInProof(Cid const cid, bool const b) {
 		(*this)[cid].setUsedInProof(b);
 	}
 
-	inline Clause const& operator[](Cid const & cid) const {
+	inline Clause<Lit> const& operator[](Cid const & cid) const {
 		return getClause(Cid_Internal::cast(cid));
 	}
 
-	inline Clause& operator[](Cid const cid) {
+	inline Clause<Lit>& operator[](Cid const cid) {
 		return getClause(Cid_Internal::cast(cid));
 	}
 
@@ -500,39 +416,29 @@ public:
 
 	Cid begin() const {
 		return (storages[0].size() > 0) ?
-				Cid_Internal::create(0, getPos(0, 0).getGroup(),
-						getPos(0, 0).getLbd(), 0) :
+				Cid_Internal::create(0, getPos(0, 0).getType(), 0) :
 				end();
 	}
 
 	void next(Cid &cur) const {
-		Clause const &co = operator[](cur);
+		Clause<Lit> const &co = operator[](cur);
 		uint64_t const newPos = Cid_Internal::cast(cur).id
-				+ Clause::nBytes(co.nLits(), co.nResolvents());
+				+ Clause<Lit>::nBytes(co.nLits(), co.nHints());
 		uint64_t const storeId = Cid_Internal::cast(cur).fId;
 
 		if (newPos < storages[storeId].size()) { // clause in same storage
-			Clause const & nc = getPos(storeId, newPos);
-			cur = Cid_Internal::create(storeId, nc.getGroup(), nc.getLbd(),
+			Clause<Lit> const & nc = getPos(storeId, newPos);
+			cur = Cid_Internal::create(storeId, nc.getType(),
 					newPos);
 		} else {
-			if (Cid_Internal::cast(cur).fId + 1 < storages.size()
+			if (Cid_Internal::cast(cur).fId + 1u < storages.size()
 					&& storages[Cid_Internal::cast(cur).fId + 1].size() > 0) { // clause in next storage
-				Clause const & nc = getPos(Cid_Internal::cast(cur).fId, newPos);
-				cur = Cid_Internal::create(storeId + 1, nc.getGroup(),
-						nc.getLbd(), 0);
+				Clause<Lit> const & nc = getPos(Cid_Internal::cast(cur).fId, newPos);
+				cur = Cid_Internal::create(storeId + 1, nc.getType(), 0);
 			} else
 				// end of buffer
 				cur = end();
 		}
-	}
-
-	unsigned getGroupIntFast(Cid const & cid) const {
-		return Cid_Internal::cast(cid).groupId;
-	}
-
-	unsigned getGroupLbdFast(Cid const & cid) const {
-		return Cid_Internal::cast(cid).lbdId;
 	}
 
 	bool good() const {
@@ -544,22 +450,22 @@ private:
 	uint64_t nClauses;
 	std::vector<MmapStorage> storages;
 
-	Clause const& getClause(Cid_Internal const & cid) const {
+	Clause<Lit> const& getClause(Cid_Internal const & cid) const {
 		return getPos(cid.fId, cid.id);
 	}
 
-	Clause& getClause(Cid_Internal const & cid) {
+	Clause<Lit>& getClause(Cid_Internal const & cid) {
 		return getPos(cid.fId, cid.id);
 	}
 
-	Clause const & getPos(uint64_t const storeId, uint64_t const pos) const {
+	Clause<Lit> const & getPos(uint64_t const storeId, uint64_t const pos) const {
 		assert(pos >> 54 == 0);
-		return *reinterpret_cast<Clause const*>(storages[storeId].data() + pos);
+		return *reinterpret_cast<Clause<Lit> const*>(storages[storeId].data() + pos);
 	}
 
-	Clause & getPos(uint64_t const storeId, uint64_t const pos) {
+	Clause<Lit> & getPos(uint64_t const storeId, uint64_t const pos) {
 		assert(pos >> 56 == 0);
-		return *reinterpret_cast<Clause*>(storages[storeId].data() + pos);
+		return *reinterpret_cast<Clause<Lit>*>(storages[storeId].data() + pos);
 	}
 
 };

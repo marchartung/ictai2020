@@ -19,7 +19,7 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 
-namespace CompleteSatAnalyzer {
+namespace PTB {
 
 inline int closeC(int fd) {
 	return close(fd);

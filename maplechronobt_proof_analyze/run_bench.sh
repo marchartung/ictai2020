@@ -13,7 +13,7 @@ then
 fi
 
 BENCH="$2"
-EXEC_DIR="maplechronobt_proof_analyze/simp"
+EXEC_DIR="sources/simp"
 DRAT_EXEC="drat-trim/drat-trim"
 
 TMP_DIR="$1"

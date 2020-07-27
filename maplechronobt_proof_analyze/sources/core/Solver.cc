@@ -159,9 +159,8 @@ Solver::Solver() :
 		//
 				, conflict_budget(-1), propagation_budget(-1), asynch_interrupt(
 				false),
-
-		analyzer(strlen(opt_analyzer_file), opt_analyzer_file,
-				static_cast<uint64_t>(opt_max_analyzer_mb) * 1024ull * 1024ull)
+		ptb(strlen(opt_analyzer_file), opt_analyzer_file,
+				static_cast<uint64_t>(opt_max_analyzer_mb) * 1024ull * 1024ull, ToDimacs())
 
 				// simplfiy
 						, nbSimplifyAll(0), s_propagations(0)
@@ -175,22 +174,22 @@ Solver::Solver() :
 {
 
 	verbosity = opt_verb;
-	if (!analyzer.isActive() && strlen(opt_drup_file)) {
+	if (!ptb.isActive() && strlen(opt_drup_file)) {
 		drup_file = fopen(opt_drup_file, "wb");
 		if (drup_file == NULL) {
 			printf("c Error opening %s for write.\n", (const char*) drup_file);
 			exit(-1);
 		}
 	}
-	if (analyzer.isActive()) {
+	if (ptb.isActive()) {
 		if (opt_drup_file)
-			analyzer.enableDRAT(opt_drup_file);
+			ptb.enableDRAT(opt_drup_file);
 		if (opt_lrat_file)
-			analyzer.enableLRAT(opt_lrat_file);
+			ptb.enableLRAT(opt_lrat_file);
 		if (opt_lrat_file)
-			analyzer.enableTrace(opt_trace_file);
+			ptb.enableTrace(opt_trace_file);
 		if (opt_lrat_file)
-			analyzer.enableGRIT(opt_grit_file);
+			ptb.enableGRIT(opt_grit_file);
 	}
 }
 
@@ -365,7 +364,7 @@ void Solver::simpleAnalyze(CRef confl, vec<Lit>& out_learnt,
 		if (confl != CRef_Undef) {
 //			reason_clause.push(confl);
 			Clause& c = ca[confl];
-			addResolvent(c);
+			addHint(c);
 			// Special case for binary clauses
 			// The first one has to be SAT
 			if (p != lit_Undef && c.size() == 2 && value(c[0]) == l_False) {
@@ -385,7 +384,7 @@ void Solver::simpleAnalyze(CRef confl, vec<Lit>& out_learnt,
 					} else {
 						assert(value(q) == l_False);
 						seen[var(q)] = 1;
-						addResolvent(q);
+						addHint(q);
 						analyze_toclear.push(q);
 					}
 				}
@@ -529,12 +528,12 @@ bool Solver::simplifyLearnt_core() {
 				detachClause(cr, true);
 
 				if (false_lit) {
-					addResolvent(c);
+					addHint(c);
 					for (li = lj = 0; li < c.size(); li++) {
 						if (value(c[li]) != l_False) {
 							c[lj++] = c[li];
 						} else
-							addResolvent(c[li]);
+							addHint(c[li]);
 					}
 					c.shrink(li - lj);
 					replaceAnalyze(c);
@@ -652,12 +651,12 @@ bool Solver::simplifyLearnt_tier2() {
 			} else {
 				detachClause(cr, true);
 				if (false_lit) {
-					addResolvent(c);
+					addHint(c);
 					for (li = lj = 0; li < c.size(); li++) {
 						if (value(c[li]) != l_False) {
 							c[lj++] = c[li];
 						} else
-							addResolvent(c[li]);
+							addHint(c[li]);
 					}
 					c.shrink(li - lj);
 					replaceAnalyze(c);
@@ -808,7 +807,7 @@ bool Solver::addClause_(vec<Lit>& ps) {
 	Lit p;
 	int i, j;
 
-	if (drup_file || analyzer.isActive()) {
+	if (drup_file || ptb.isActive()) {
 		add_oc.clear();
 		for (int i = 0; i < ps.size(); i++)
 			add_oc.push(ps[i]);
@@ -817,7 +816,7 @@ bool Solver::addClause_(vec<Lit>& ps) {
 	for (i = j = 0, p = lit_Undef; i < ps.size(); i++)
 		if (value(ps[i]) == l_True || ps[i] == ~p) {
 
-			analyzer.removeClause(analyzer.addClause(add_oc));
+			ptb.removeResolvent(ptb.addResolvent(add_oc));
 			return true;
 		} else if (value(ps[i]) != l_False && ps[i] != p)
 			ps[j++] = p = ps[i];
@@ -840,19 +839,22 @@ bool Solver::addClause_(vec<Lit>& ps) {
 #endif
 		}
 	}
-	if (analyzer.isActive()) {
+	if (ptb.isActive()) {
 		if (add_oc.size() > ps.size()) {
-			uint64_t const cid = analyzer.addClause(add_oc);
-			analyzer.addResolvent(cid);
+			uint64_t const cid = ptb.addResolvent(add_oc);
+			ptb.addHint(cid);
 			for (int i = 0; i < add_oc.size(); ++i)
 				if (value(add_oc[i]) == l_False)
-					addResolvent(add_oc[i]);
+					addHint(add_oc[i]);
 		}
 
 	}
 	if (ps.size() == 0) {
-		analyzer.addEmptyClause();
+	{
+		add_tmp.clear();
+		ptb.addResolvent(add_tmp);
 		return ok = false;
+	}
 	} else if (ps.size() == 1) {
 		uncheckedEnqueue(ps[0]);
 		if (!propagateLevelZeroCheck())
@@ -1097,7 +1099,6 @@ void Solver::analyze(CRef confl, vec<Lit>& out_learnt, int& out_btlevel,
 	int pathC = 0;
 	Lit p = lit_Undef;
 	unsigned numResolvents = 0;
-	assert(!analyzer.hasResolvents());
 	// Generate conflict clause:
 	//
 	out_learnt.push();      // (leave room for the asserting literal)
@@ -1109,7 +1110,7 @@ void Solver::analyze(CRef confl, vec<Lit>& out_learnt, int& out_btlevel,
 		assert(confl != CRef_Undef); // (otherwise should be UIP)
 		Clause& c = ca[confl];
 		++numResolvents;
-		addResolvent(c);
+		addHint(c);
 
 		// For binary clauses, we don't rearrange literals in propagate(), so check and make sure the first is an implied lit.
 		if (p != lit_Undef && c.size() == 2 && value(c[0]) == l_False) {
@@ -1161,7 +1162,7 @@ void Solver::analyze(CRef confl, vec<Lit>& out_learnt, int& out_btlevel,
 				else {
 					seen[var(q)] = 1;
 					analyze_toclear.push(q);
-					addResolvent(q);
+					addHint(q);
 				}
 			}
 		}
@@ -1284,7 +1285,7 @@ bool Solver::binResMinimize(vec<Lit>& out_learnt) {
 		if (seen2[var(the_other)] == counter && value(the_other) == l_True) {
 			to_remove++;
 			seen2[var(the_other)] = counter - 1; // Remember to remove this variable.
-			addResolvent(ca[ws[i].cref]);
+			addHint(ca[ws[i].cref]);
 		}
 	}
 
@@ -1302,14 +1303,14 @@ bool Solver::binResMinimize(vec<Lit>& out_learnt) {
 // Check if 'p' can be removed. 'abstract_levels' is used to abort early if the algorithm is
 // visiting literals at levels that cannot be removed later.
 bool Solver::litRedundant(Lit p, uint32_t abstract_levels) {
-	analyzer.anounceRevertableResolvents();
+	ptb.markRevertableHints();
 	analyze_stack.clear();
 	analyze_stack.push(p);
 	int top = analyze_toclear.size();
 	while (analyze_stack.size() > 0) {
 		assert(reason(var(analyze_stack.last())) != CRef_Undef);
 		Clause& c = ca[reason(var(analyze_stack.last()))];
-		addUnorderedResolvent(c);
+		addUnorderedHint(c);
 		analyze_stack.pop();
 
 		// Special handling for binary clauses like in 'analyze()'.
@@ -1332,11 +1333,11 @@ bool Solver::litRedundant(Lit p, uint32_t abstract_levels) {
 						for (int j = top; j < analyze_toclear.size(); j++)
 							seen[var(analyze_toclear[j])] = 0;
 						analyze_toclear.shrink(analyze_toclear.size() - top);
-						analyzer.clearRevertableResolvents();
+						ptb.revertHints();
 						return false;
 					}
 				} else {
-					addResolvent(p);
+					addHint(p);
 					seen[var(p)] = 1;
 					analyze_toclear.push(p);
 				}
@@ -1830,7 +1831,6 @@ lbool Solver::search(int& nof_conflicts) {
 
 		if (confl != CRef_Undef) {
 
-			assert(!analyzer.hasResolvents());
 			// CONFLICT
 			if (VSIDS) {
 				if (--timer == 0 && var_decay < 0.95)
@@ -1921,7 +1921,6 @@ lbool Solver::search(int& nof_conflicts) {
 			if (VSIDS)
 				varDecayActivity();
 			claDecayActivity();
-			analyzer.notifyConflictEnd();
 			/*if (--learntsize_adjust_cnt == 0){
 			 learntsize_adjust_confl *= learntsize_adjust_inc;
 			 learntsize_adjust_cnt    = (int)learntsize_adjust_confl;
@@ -2054,21 +2053,18 @@ static void SIGALRM_switch(int signum) {
 lbool Solver::solve_() {
 	bool useVsids = true;
 	if (det_heuristic.size() == 0) {
-		if(verbosity > 0)
-			std::cout << "c using switch mode between dist, lrb, vsids" << std::endl;
+		if (verbosity > 0)
+			std::cout << "c using switch mode between dist, lrb, vsids"
+					<< std::endl;
 		signal(SIGALRM, SIGALRM_switch);
 		alarm(2500);
-	}
-	else if(det_heuristic == "lrb")
-	{
+	} else if (det_heuristic == "lrb") {
 		useVsids = false;
-		if(verbosity > 0)
+		if (verbosity > 0)
 			std::cout << "c running deterministic with LRB" << std::endl;
-	}
-	else if(verbosity > 0)
-			std::cout << "c running deterministic with VSIDS" << std::endl;
+	} else if (verbosity > 0)
+		std::cout << "c running deterministic with VSIDS" << std::endl;
 
-	analyzer.notifyPreprocessorEnd();
 	model.clear();
 	conflict.clear();
 	if (!ok)
@@ -2140,7 +2136,6 @@ lbool Solver::solve_() {
 			model[i] = value(i);
 	} else if (status == l_False && conflict.size() == 0)
 		ok = false;
-	analyzer.notifySolution(status);
 	cancelUntil(0);
 	return status;
 }

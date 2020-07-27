@@ -46,7 +46,7 @@
 #include "mtl/Alg.h"
 #include "utils/Options.h"
 #include "core/SolverTypes.h"
-#include "CompleteSatAnalyzer/Analyzer.h"
+#include "ptb/ProofTracingBackend.hpp"
 
 // Don't change the actual numbers.
 #define LOCAL 0
@@ -258,7 +258,8 @@ protected:
 	struct VarOrderLt {
 		const vec<double>& activity;
 		bool operator ()(Var x, Var y) const {
-			return activity[x] > activity[y] || (activity[x] == activity[y] && x < y);
+			return activity[x] > activity[y]
+					|| (activity[x] == activity[y] && x < y);
 		}
 		VarOrderLt(const vec<double>& act) :
 				activity(act) {
@@ -353,107 +354,102 @@ protected:
 		std::cout << "]\n";
 	}
 
+
+	struct ToDimacs
+	{
+		int operator()(Lit const l) const{
+			 return ((sign(l)) ? -1 : 1) * (var(l)+1);
+		}
+	};
 #ifdef COMPLETESATANALYZER_ANALYZE
-	CompleteSatAnalyzer::Analyzer<true> analyzer;
+	PTB::Analyzer<true, Lit, ToDimacs> ptb;
 	vec<uint64_t> unitCids;
 #else
-	CompleteSatAnalyzer::Analyzer<false> analyzer;
+	PTB::Analyzer<false, Lit,ToDimacs> ptb;
 #endif
 
 	void addAnalyzerVar(Var const v) {
 #ifdef COMPLETESATANALYZER_ANALYZE
-		if(analyzer.isActive())
-		{
+		if (ptb.isActive()) {
 			assert(v == unitCids.size());
 			unitCids.push(std::numeric_limits<uint64_t>::max());
-			analyzer.newVar();
+			ptb.newVar();
 		}
 #endif
 	}
 
-	void addResolvent(Lit const l) {
+	void addHint(Lit const l) {
 #ifdef COMPLETESATANALYZER_ANALYZE
 
-		if(analyzer.isActive())
-		{
+		if (ptb.isActive()) {
 			assert(var(l) < unitCids.size());
 			assert(unitCids[var(l)] != std::numeric_limits<uint64_t>::max());
-			analyzer.addUnitResolvent(unitCids[var(l)]);
+			ptb.addUnitHint(unitCids[var(l)]);
 		}
 #endif
 	}
 
-	void addResolvent(Clause const & c) {
+	void addHint(Clause const & c) {
 #ifdef COMPLETESATANALYZER_ANALYZE
 
-		if(analyzer.isActive())
-		{
-			analyzer.addResolvent(c.getCid());
+		if (ptb.isActive()) {
+			ptb.addHint(c.getCid());
 		}
 #endif
 	}
 
-	void addUnorderedResolvent(Clause const & c) {
+	void addUnorderedHint(Clause const & c) {
 #ifdef COMPLETESATANALYZER_ANALYZE
 
-		if(analyzer.isActive())
-		{
-			analyzer.addUnorderedResolvent(c.getCid());
+		if (ptb.isActive()) {
+			ptb.addUnorderedHint(c.getCid());
 		}
 #endif
 	}
 
-	void addResolvent(CRef const ref) {
-		addResolvent(ca[ref]);
+	void addHint(CRef const ref) {
+		addHint(ca[ref]);
 	}
 
 	void addAnalyze(Clause & c) {
 #ifdef COMPLETESATANALYZER_ANALYZE
 
-		if(analyzer.isActive())
-		{
-			c.setCid(analyzer.addClause(c,c.lbd()));
+		if (ptb.isActive()) {
+			c.setCid(ptb.addResolvent(c));
 		}
 #endif
 	}
 
 	void replaceAnalyze(Clause & c) {
 #ifdef COMPLETESATANALYZER_ANALYZE
-		if(analyzer.isActive() && c.size() > 1)
-		{
-			assert(analyzer.hasResolvents());
+		if (ptb.isActive() && c.size() > 1) {
 			uint64_t const cid = c.getCid();
-			c.setCid(analyzer.addClause(c,c.lbd()));
-			analyzer.removeClause(cid);
+			c.setCid(ptb.addResolvent(c));
+			ptb.removeResolvent(cid);
 		}
 #endif
 	}
 
 	void analyzeFalseLits(Clause & c, vec<Lit> const & falseLits) {
 #ifdef COMPLETESATANALYZER_ANALYZE
-		if(analyzer.isActive())
-		{
-			addResolvent(c);
-			for(int i=0;i<falseLits.size();++i)
-			{
+		if (ptb.isActive()) {
+			addHint(c);
+			for (int i = 0; i < falseLits.size(); ++i) {
 				seen[var(falseLits[i])] = 1;
 			}
-			for(int i=trail.size()-1;i >= trailRecord;--i)
-			{
-				if(seen[var(trail[i])] == 1)
-				{
-					if(reason(var(trail[i])) != CRef_Undef)
-					{
+			for (int i = trail.size() - 1; i >= trailRecord; --i) {
+				if (seen[var(trail[i])] == 1) {
+					if (reason(var(trail[i])) != CRef_Undef) {
 						Clause const & c = ca[reason(var(trail[i]))];
-						addResolvent(c);
-						for (int j =0; j < c.size(); j++) {
+						addHint(c);
+						for (int j = 0; j < c.size(); j++) {
 							Lit const q = c[j];
-							if(value(q) == l_True)
+							if (value(q) == l_True)
 								continue;
 							if (!seen[var(q)]) {
 								seen[var(q)] = 1;
 								if (level(var(q)) == 0) {
-									addResolvent(q);
+									addHint(q);
 									analyze_toclear.push(q);
 								}
 							}
@@ -465,10 +461,10 @@ protected:
 
 			replaceAnalyze(c);
 
-			for(int i=0;i<analyze_toclear.size();++i)
+			for (int i = 0; i < analyze_toclear.size(); ++i)
 				seen[var(analyze_toclear[i])] = 0;
 			analyze_toclear.clear();
-			for(int i=0;i<seen.size();++i)
+			for (int i = 0; i < seen.size(); ++i)
 				assert(seen[i] == 0);
 		}
 #endif
@@ -481,9 +477,8 @@ protected:
 	void removeAnalyze(Clause const & c) {
 #ifdef COMPLETESATANALYZER_ANALYZE
 
-		if(analyzer.isActive())
-		{
-			analyzer.removeClause(c.getCid());
+		if (ptb.isActive()) {
+			ptb.removeResolvent(c.getCid());
 		}
 #endif
 	}
@@ -497,7 +492,7 @@ protected:
 		assert(ok);
 		CRef const confl = propagate();
 		ok = (confl == CRef_Undef);
-		if (analyzer.isActive() && !ok) {
+		if (ptb.isActive() && !ok) {
 			analyzeLevelZeroConflict(confl);
 		}
 		return ok;
@@ -507,33 +502,33 @@ protected:
 #ifdef COMPLETESATANALYZER_ANALYZE
 		assert(confl != CRef_Undef);
 		Clause const & c = ca[confl];
-		addResolvent(c);
+		addHint(c);
 		for (int i = 0; i < c.size(); ++i)
-		addResolvent(c[i]);
-		analyzer.addEmptyClause();
+			addHint(c[i]);
+		add_tmp.clear();
+		ptb.addResolvent(add_tmp);
 #endif
 	}
 
 	void analyzeEnqueuePropagation(Lit const l, int const lvl, CRef const ref) {
 #ifdef COMPLETESATANALYZER_ANALYZE
-		if(lvl == 0 && analyzer.isActive() && unitCids[var(l)] == std::numeric_limits<uint64_t>::max())
-		{
+		if (lvl == 0 && ptb.isActive()
+				&& unitCids[var(l)] == std::numeric_limits<uint64_t>::max()) {
+			add_tmp.clear();
+			add_tmp.push(l);
 			assert(var(l) < unitCids.size());
-			if(ref != CRef_Undef)
-			{
-				assert(!analyzer.hasResolvents());
+			if (ref != CRef_Undef) {
 				Clause const & c = ca[ref];
-				for(int i=0;i<c.size();++i)
-				{
+				for (int i = 0; i < c.size(); ++i) {
 					assert(c[i] == l || value(c[i]) == l_False);
-					if(c[i] != l && value(c[i]) == l_False)
-					addResolvent(c[i]);
+					if (c[i] != l && value(c[i]) == l_False)
+						addHint(c[i]);
 				}
-				addResolvent(ref);
-				unitCids[var(l)] = analyzer.addUnit(l, CompleteSatAnalyzer::ClauseOrigin::REDUNDANT);
-			}
-			else
-			unitCids[var(l)] = analyzer.addUnit(l);
+				addHint(ref);
+				unitCids[var(l)] = ptb.addResolvent(add_tmp,
+						PTB::ClauseOrigin::REDUNDANT);
+			} else
+				unitCids[var(l)] = ptb.addResolvent(add_tmp);
 		}
 #endif
 	}
@@ -541,7 +536,9 @@ protected:
 	void analyzeAddUnit(Lit const l) {
 #ifdef COMPLETESATANALYZER_ANALYZE
 		assert(var(l) < unitCids.size());
-		unitCids[var(l)] = analyzer.addUnit(l);
+		add_tmp.clear();
+		add_tmp.push(l);
+		unitCids[var(l)] = ptb.addResolvent(add_tmp);
 #endif
 	}
 

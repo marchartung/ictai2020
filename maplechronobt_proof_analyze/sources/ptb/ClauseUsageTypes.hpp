@@ -15,26 +15,12 @@
 #include <array>
 #include <limits>
 
-#include "MmapVector.h"
 #include "core/SolverTypes.h"
+#include "MmapStorage.hpp"
 #include "utils/System.h"
 
-namespace CompleteSatAnalyzer {
-
-using Lit=Minisat::Lit;
-
-template<typename T>
-using vec=Minisat::vec<T>;
-
-using Minisat::var;
-using Minisat::lit_Undef;
-
-using Minisat::cpuTime;
-
-using Var = Minisat::Var;
-using Minisat::sign;
-
-using lbool=Minisat::lbool;
+namespace PTB {
+typedef uint64_t Cid;
 
 }
 
